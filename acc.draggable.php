@@ -11,12 +11,26 @@ class Draggable_acc {
 		'field_management' => array(
 			'table' => 'exp_channel_fields',
 			'field'	=> 'field_order',
-			'id'	=> 'field_id'
+			'id'	=> 'field_id',
+			'updateOrder'	=> true
 		),
 		'status_management' => array(
 			'table' => 'exp_statuses',
 			'field'	=> 'status_order',
-			'id'	=> 'status_id'
+			'id'	=> 'status_id',
+			'updateOrder'	=> true
+		),
+		'category_update' => array(
+			'table' => 'exp_categories',
+			'field'	=> 'cat_order',
+			'id'	=> 'cat_id',
+			'updateOrder'	=> false
+		),
+		'category_editor' => array(
+			'table' => 'exp_categories',
+			'field'	=> 'cat_order',
+			'id'	=> 'cat_id',
+			'updateOrder'	=> false
 		)
 	);
 
@@ -40,7 +54,8 @@ class Draggable_acc {
 			EE.draggable = {
 				table: "' . $page['table'] . '",
 				field: "' . $page['field'] . '",
-				id:    "' . $page['id'] . '"
+				id:    "' . $page['id'] . '",
+				updateOrder:    "' . $page['updateOrder'] . '"
 			}
 			//]]>
 			</script>
@@ -74,4 +89,4 @@ class Draggable_acc {
 // END CLASS
 
 /* End of file acc.draggable.php */
-/* Location: ./system/expressionengine/third_party/accessories/acc.draggable.php */
+/* Location: ./system/expressionengine/third_party/draggable/acc.draggable.php */

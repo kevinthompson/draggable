@@ -87,3 +87,6 @@ class Draggable_ext
 	}
 
 }
+
+/* End of file ext.draggable.php */
+/* Location: ./system/expressionengine/third_party/draggable/ext.draggable.php */
