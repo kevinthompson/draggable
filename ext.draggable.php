@@ -6,7 +6,7 @@ class Draggable_ext
 	var $name            = 'Draggable';
 	var $version         = '1.0';
 	var $description     = 'Add drag and drop sorting to various areas of the control panel.';
-	var $settings_exist  = 'n';
+	var $settings_exist  = 'y';
 	var $docs_url		 = '';
 
 	function Draggable_ext($settings='')
@@ -14,6 +14,23 @@ class Draggable_ext
 	    $this->settings = $settings;
 	    $this->EE =& get_instance();
 	}
+	
+	// --------------------------------
+	//  Settings
+	// --------------------------------  
+
+	function settings()
+	{	
+		$settings = array();
+		
+		$settings[$this->EE->lang->line('draggable_categories')] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
+		$settings[$this->EE->lang->line('draggable_custom_fields')] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
+		$settings[$this->EE->lang->line('draggable_statuses')] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
+		
+		$settings[$this->EE->lang->line('draggable_display_tab')] = array('s', array('always' => $this->EE->lang->line('always'), 'pages' => $this->EE->lang->line('draggable_pages'), 'never' => $this->EE->lang->line('never')), 'pages');
+	
+		return $settings;
+	}	
 	
 	function update_order($session)
 	{
