@@ -87,7 +87,7 @@ class Draggable_acc {
 	 */
 	function set_sections()
 	{	
-		$tabs = isset($this->settings[$this->EE->lang->line('draggable_display_tab')]) ? $this->settings[$this->EE->lang->line('draggable_display_tabs')] : 'pages';
+		$tabs = isset($this->settings[$this->EE->lang->line('draggable_display_tab')]) ? $this->settings[$this->EE->lang->line('draggable_display_tab')] : 'pages';
 		if($tabs == 'always' || ($tabs == 'pages' && $this->EE->input->get('M') != '' && array_key_exists($this->EE->input->get('M'),$this->valid_pages)))
 		{
 			$this->sections[$this->EE->lang->line('draggable_sorting_enabled')] = $this->EE->lang->line('draggable_instructions');
