@@ -28,7 +28,7 @@
 									row.addClass('odd');
 								}
 								
-								row.find('td:eq(' + index + ')').text(i+1);
+								if(EE.draggable.updateOrder) row.find('td:eq(' + index + ')').text(i+1);
 							
 								var href = row.find('td a:first').attr('href');
 								var params = href.split('&');
