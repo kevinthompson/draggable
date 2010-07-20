@@ -66,7 +66,7 @@ class Draggable_acc {
 				table: "' . $this->current_page['table'] . '",
 				field: "' . $this->current_page['field'] . '",
 				id:    "' . $this->current_page['id'] . '",
-				updateOrder:    ' . $this->current_page['updateOrder'] . '
+				updateOrder:    ' . (isset($this->current_page['updateOrder']) ? $this->current_page['updateOrder'] : 'false') . '
 			}
 			//]]>
 			</script>

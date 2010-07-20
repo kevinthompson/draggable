@@ -12,6 +12,7 @@
 						'field' : EE.draggable.field,
 						'id' : EE.draggable.id,
 					}
+					
 					if(EE.draggable.updateOrder) var index = table.find('th').index($('th:contains("Order")'));
 					
 					table.tableDnD({

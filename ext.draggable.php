@@ -69,14 +69,21 @@ class Draggable_ext
 		
 	function activate_extension()
 	{
+		$this->settings = array(
+			'draggable_categories'		=> 'yes',
+			'draggable_custom_fields'	=> 'yes',
+			'draggable_statuses'		=> 'yes',
+			'draggable_hide_order'		=> 'yes',
+			'draggable_display_tab'		=> 'pages'
+		);
 
-	  $this->EE->db->query($this->EE->db->insert_string('exp_extensions',
+		$this->EE->db->query($this->EE->db->insert_string('exp_extensions',
 	    	array(
 				'extension_id' => '',
 		        'class'        => ucfirst(get_class($this)),
 		        'method'       => 'update_order',
 		        'hook'         => 'sessions_end',
-		        'settings'     => '',
+		        'settings'     => serialize($this->settings),
 		        'priority'     => 10,
 		        'version'      => $this->version,
 		        'enabled'      => "y"
