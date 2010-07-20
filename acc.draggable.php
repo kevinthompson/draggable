@@ -11,35 +11,34 @@ class Draggable_acc {
 	var $sections		= array();
 	var $settings		= array();
 	var $valid_pages	= array();
+	var $current_page	= '';
 	
 	var $pages			= array(				
 		'category_update' => array(
 			'lang'	=> 'draggable_categories',
 			'table' => 'exp_categories',
 			'field'	=> 'cat_order',
-			'id'	=> 'cat_id',
-			'updateOrder'	=> false
+			'id'	=> 'cat_id'
 		),
 		'category_editor' => array(
 			'lang'	=> 'draggable_categories',
 			'table' => 'exp_categories',
 			'field'	=> 'cat_order',
-			'id'	=> 'cat_id',
-			'updateOrder'	=> false
+			'id'	=> 'cat_id'
 		),
 		'field_management' => array(
 			'lang'	=> 'draggable_custom_fields',
 			'table' => 'exp_channel_fields',
 			'field'	=> 'field_order',
 			'id'	=> 'field_id',
-			'updateOrder'	=> true
+			'updateOrder'	=> true,
+			'hideOrder'		=> true
 		),
 		'status_management' => array(
 			'lang'	=> 'draggable_statuses',
 			'table' => 'exp_statuses',
 			'field'	=> 'status_order',
-			'id'	=> 'status_id',
-			'updateOrder'	=> true
+			'id'	=> 'status_id'
 		)
 	);
 
@@ -55,7 +54,7 @@ class Draggable_acc {
 		
 		if($this->EE->input->get('M') != '' && array_key_exists($this->EE->input->get('M'),$this->valid_pages)){
 			
-			$page = $this->valid_pages[$this->EE->input->get('M')];
+			$this->current_page = $this->valid_pages[$this->EE->input->get('M')];
 			
 			$this->EE->cp->load_package_js('jquery.tablednd_0_5');
 			$this->EE->cp->load_package_js('jquery.json-2.2.min');
@@ -64,10 +63,10 @@ class Draggable_acc {
 			<script type="text/javascript">
 			//<![CDATA[
 			EE.draggable = {
-				table: "' . $page['table'] . '",
-				field: "' . $page['field'] . '",
-				id:    "' . $page['id'] . '",
-				updateOrder:    "' . $page['updateOrder'] . '"
+				table: "' . $this->current_page['table'] . '",
+				field: "' . $this->current_page['field'] . '",
+				id:    "' . $this->current_page['id'] . '",
+				updateOrder:    ' . $this->current_page['updateOrder'] . '
 			}
 			//]]>
 			</script>
@@ -87,12 +86,25 @@ class Draggable_acc {
 	 */
 	function set_sections()
 	{	
-		$tabs = isset($this->settings[$this->EE->lang->line('draggable_display_tab')]) ? $this->settings[$this->EE->lang->line('draggable_display_tab')] : 'pages';
+		$this->settings = $this->get_settings();
+		$hideOrder = '';
+		
+		if(isset($this->current_page['hideOrder']) && $this->current_page['hideOrder'] === true && (!isset($this->settings['draggable_hide_order']) || (isset($this->settings['draggable_hide_order']) && $this->settings['draggable_hide_order'] == 'yes')))
+		{
+			$hideOrder = '$(".mainTable").find("tr th:nth-child(2),tr td:nth-child(2)").hide();';
+		}
+		
+		$tabs = isset($this->settings['draggable_display_tab']) ? $this->settings['draggable_display_tab'] : 'pages';
 		if($tabs == 'always' || ($tabs == 'pages' && $this->EE->input->get('M') != '' && array_key_exists($this->EE->input->get('M'),$this->valid_pages)))
 		{
-			$this->sections[$this->EE->lang->line('draggable_sorting_enabled')] = $this->EE->lang->line('draggable_instructions');
+			$this->sections[$this->EE->lang->line('draggable_sorting_enabled') . ($hideOrder != '' ? '<script type="text/javascript">' . $hideOrder . '</script>' : '')] = $this->EE->lang->line('draggable_instructions');
 		}else{
-			$this->sections['<script type="text/javascript">$("#accessoryTabs .' . $this->id  . '").parent("li").hide();</script>'] = "This is not the accessory you're looking for.";
+			$this->sections['
+			<script type="text/javascript">
+				$("#accessoryTabs .' . $this->id  . '").parent("li").hide();' . 
+				$hideOrder . '
+			</script>
+			'] = "This is not the accessory you're looking for.";
 		}
 	}
 
@@ -112,7 +124,7 @@ class Draggable_acc {
 		
 		foreach($this->pages as $title => $page)
 		{
-			if(!isset($this->settings[$this->EE->lang->line($page['lang'])]) || $this->settings[$this->EE->lang->line($page['lang'])] == 'yes') $valid_pages[$title] = $page;
+			if(!isset($this->settings[$page['lang']]) || $this->settings[$page['lang']] == 'yes') $valid_pages[$title] = $page;
 		}
 		
 		return $valid_pages;

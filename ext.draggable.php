@@ -23,9 +23,10 @@ class Draggable_ext
 	{	
 		$settings = array();
 		
-		$settings[$this->EE->lang->line('draggable_categories')] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
-		$settings[$this->EE->lang->line('draggable_custom_fields')] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
-		$settings[$this->EE->lang->line('draggable_statuses')] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
+		$settings['draggable_categories'] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
+		$settings['draggable_custom_fields'] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
+		$settings['draggable_statuses'] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
+		$settings['draggable_hide_order'] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
 		
 		$settings[$this->EE->lang->line('draggable_display_tab')] = array('s', array('always' => $this->EE->lang->line('always'), 'pages' => $this->EE->lang->line('draggable_pages'), 'never' => $this->EE->lang->line('never')), 'pages');
 	
