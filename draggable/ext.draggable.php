@@ -1,10 +1,22 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Draggable
+ *
+ * This extension works in conjunction with its accessory to add draggable sorting to additional areas of the control panel.
+ *
+ * @package   Draggable
+ * @author    Kevin Thompson <me@kevinthompson.info>
+ * @link      http://github.com/kevinthompson/draggable
+ * @copyright Copyright (c) 2010 Kevin Thompson
+ * @license   http://creativecommons.org/licenses/by-sa/3.0/   Attribution-Share Alike 3.0 Unported
+ */
+
 class Draggable_ext
 {
 	var $settings        = array();
 	var $name            = 'Draggable';
-	var $version         = '1.0';
+	var $version         = '1.1';
 	var $description     = 'Add drag and drop sorting to various areas of the control panel.';
 	var $settings_exist  = 'y';
 	var $docs_url		 = '';
