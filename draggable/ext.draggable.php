@@ -58,6 +58,7 @@ class Draggable_ext
 			
 			foreach($fields as $index => $field)
 			{
+				/*
 				$field = (array) $field;
 				$index++;
 				$group_id = ($field['group_id'] != '' ? $field['group_id'] : "");
@@ -68,6 +69,7 @@ class Draggable_ext
 				$this->db->where($db->id_field,$field[$db->id_field]);
 				if($group_id != '') $this->db->where('group_id',$group_id);
 				$this->db->update($db->table,$data);
+				*/
 			}
 			
 			// Kill EE Execution
