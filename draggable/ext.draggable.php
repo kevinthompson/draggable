@@ -58,7 +58,7 @@ class Draggable_ext
 			
 			foreach($fields as $index => $field)
 			{
-				$field = (array) $field;
+				//$field = (array) $field;
 				//$index++;
 				//$group_id = ($field['group_id'] != '' ? $field['group_id'] : "");
 				
