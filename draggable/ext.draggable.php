@@ -65,6 +65,9 @@ class Draggable_ext
 				$data = array();
 				$data[$db->order_field] = $index;
 				
+				
+				echo "UPDATE $db->table SET $db->order_field = '$index' WHERE $db->id_field = '" . $field[$db->id_field] . "'" . "\n";
+				
 				$this->EE->db->where($db->id_field,$field[$db->id_field]);
 				if($group_id != '') $this->EE->db->where('group_id',$group_id);
 				$this->EE->db->update($db->table,$data);
