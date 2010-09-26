@@ -16,7 +16,7 @@ class Draggable_ext
 {
 	var $settings        = array();
 	var $name            = 'Draggable';
-	var $version         = '1.1';
+	var $version         = '1.2';
 	var $description     = 'Add drag and drop sorting to various areas of the control panel.';
 	var $settings_exist  = 'y';
 	var $docs_url		 = '';
@@ -112,7 +112,8 @@ class Draggable_ext
 	    }
 	    
 		$this->EE->db->query("UPDATE exp_extensions 
-	     	SET version = '". $this->EE->db->escape_str($this->version)."' 
+	     	SET version = '". $this->EE->db->escape_str($this->version)."',
+	 			settings = REPLACE(settings,'Display Accessory Tab','draggable_display_tab')
 	     	WHERE class = '".ucfirst(get_class($this))."'");
 	}
 
