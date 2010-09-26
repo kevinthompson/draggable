@@ -67,8 +67,6 @@ class Draggable_ext
 				
 				$this->EE->db->where($db->id_field,$field[$db->id_field]);
 				if($group_id != '') $this->EE->db->where('group_id',$group_id);
-				echo $db->table . "\n";
-				print_r($data);
 				$this->EE->db->update($db->table,$data);
 			}
 			
