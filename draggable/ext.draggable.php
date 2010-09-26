@@ -65,11 +65,11 @@ class Draggable_ext
 				$data = array();
 				$data[$db->field] = $index;
 				
-				$this->db->where($db->id_field,$field[$db->id_field]);
+				$this->EE->db->where($db->id_field,$field[$db->id_field]);
 				if($group_id != '') $this->db->where('group_id',$group_id);
-				$this->db->_compile_select();
-				$this->db->update($db->table,$data);
-				echo $this->db->last_query();
+				$this->EE->db->_compile_select();
+				$this->EE->db->update($db->table,$data);
+				echo $this->EE->db->last_query();
 			}
 			
 			// Kill EE Execution
