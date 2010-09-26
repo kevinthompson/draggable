@@ -70,8 +70,6 @@ class Draggable_ext
 			
 			$sql .= "END WHERE " . $db->id . " IN (" . $csv . ")" . ($group_id != '' ? " AND group_id = " . $group_id : "");
 			
-			echo $sql;
-			
 			$this->EE->db->query($sql);
 			
 			// Kill EE Execution
