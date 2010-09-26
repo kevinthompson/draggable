@@ -58,17 +58,18 @@ class Draggable_ext
 			
 			foreach($fields as $index => $field)
 			{
-				//$field = (array) $field;
-				//$index++;
-				//$group_id = ($field['group_id'] != '' ? $field['group_id'] : "");
+				$field = (array) $field;
+				$index++;
+				$group_id = ($field['group_id'] != '' ? $field['group_id'] : "");
 				
 				$data = array();
-				//$data[$db->field] = $index;
+				$data[$db->field] = $index;
 				
-				//$this->db->where($db->id_field,$field[$db->id_field]);
-				//if($group_id != '') $this->db->where('group_id',$group_id);
-				
-				$this->db->update('exp_channel_fields',$data);
+				$this->db->where($db->id_field,$field[$db->id_field]);
+				if($group_id != '') $this->db->where('group_id',$group_id);
+				$this->db->_compile_select();
+				$this->db->update($db->table,$data);
+				$this->db->last_query();
 			}
 			
 			// Kill EE Execution
