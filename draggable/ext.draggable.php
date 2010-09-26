@@ -49,14 +49,14 @@ class Draggable_ext
 		if($this->EE->input->post('draggable_ajax') != '')
 		{
 
-			// add json lib if < PHP 5.2
+			// Add JSON Encode/Decode for PHP < 5.2
 			include_once 'includes/jsonwrapper/jsonwrapper.php';
 			
-			// decode json data
+			// Decode JSON Data
 			$fields = json_decode($this->EE->input->post('draggable_ajax'));
 			$db = json_decode($this->EE->input->post('draggable_db'));
 			
-			// store new values
+			// Store New Values
 			$sql = "UPDATE " . $db->table . " SET " . $db->field . " = CASE " . $db->id . " ";
 			
 			foreach($fields as $index => $field)
@@ -70,9 +70,11 @@ class Draggable_ext
 			
 			$sql .= "END WHERE " . $db->id . " IN (" . $csv . ")" . ($group_id != '' ? " AND group_id = " . $group_id : "");
 			
+			echo $sql;
+			
 			$this->EE->db->query($sql);
 			
-			// kill ee execution
+			// Kill EE Execution
 			exit();
 		}
 	}
