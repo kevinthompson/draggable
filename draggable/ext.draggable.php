@@ -67,9 +67,8 @@ class Draggable_ext
 				
 				//$this->db->where($db->id_field,$field[$db->id_field]);
 				//if($group_id != '') $this->db->where('group_id',$group_id);
-				echo $db->table;
-				exit();
-				$this->db->update($db->table,$data);
+				
+				$this->db->update('exp_channel_fields',$data);
 			}
 			
 			// Kill EE Execution
