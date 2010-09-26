@@ -60,10 +60,10 @@ class Draggable_ext
 			{
 				$field = (array) $field;
 				//$index++;
-				$group_id = ($field['group_id'] != '' ? $field['group_id'] : "");
+				//$group_id = ($field['group_id'] != '' ? $field['group_id'] : "");
 				
 				$data = array();
-				$data[$db->field] = $index;
+				//$data[$db->field] = $index;
 				
 				$this->db->where($db->id_field,$field[$db->id_field]);
 				//if($group_id != '') $this->db->where('group_id',$group_id);
