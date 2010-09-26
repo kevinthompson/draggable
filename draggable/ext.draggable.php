@@ -69,7 +69,7 @@ class Draggable_ext
 				if($group_id != '') $this->db->where('group_id',$group_id);
 				$this->db->_compile_select();
 				$this->db->update($db->table,$data);
-				$this->db->last_query();
+				echo $this->db->last_query();
 			}
 			
 			// Kill EE Execution
