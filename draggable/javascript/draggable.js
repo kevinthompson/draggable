@@ -8,9 +8,9 @@
 					
 					var fields = {};
 					var db = {
-						'table' : EE.draggable.table,
-						'field' : EE.draggable.field,
-						'id' : EE.draggable.id,
+						'table': 		EE.draggable.table,
+						'order_field': 	EE.draggable.field,
+						'id_field': 	EE.draggable.id,
 					}
 					
 					if(EE.draggable.updateOrder) var index = table.find('th').index($('th:contains("Order")'));

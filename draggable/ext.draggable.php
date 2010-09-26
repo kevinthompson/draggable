@@ -56,21 +56,18 @@ class Draggable_ext
 			$fields = json_decode($this->EE->input->post('draggable_ajax'));
 			$db = json_decode($this->EE->input->post('draggable_db'));
 			
-			// Store New Values
-			$sql = "UPDATE " . $db->table . " SET " . $db->field . " = CASE " . $db->id . " ";
-			
 			foreach($fields as $index => $field)
 			{
 				$field = (array) $field;
-				$index += 1;
-				$sql .= "WHEN " . $field[$db->id] . " THEN " . $index . " ";
-				$csv .= ($csv != '' ? ',' : '') . $field[$db->id];
+				$index++;
 				$group_id = ($field['group_id'] != '' ? $field['group_id'] : "");
+				
+				$this->db->where($db->id_field,$field[$db->id_field]);
+				if($group_id != '') $this->db->where('group_id',$group_id);
+				$this->db->update($db->table,array(
+					$db->field	=>	$index
+				));
 			}
-			
-			$sql .= "END WHERE " . $db->id . " IN (" . $csv . ")" . ($group_id != '' ? " AND group_id = " . $group_id : "");
-			
-			$this->EE->db->query($sql);
 			
 			// Kill EE Execution
 			exit();
