@@ -63,7 +63,7 @@ class Draggable_ext
 				$group_id = ($field['group_id'] != '' ? $field['group_id'] : "");
 				
 				$data = array();
-				$data[$db->field] = $index;
+				$data[$db->order_field] = $index;
 				
 				$this->EE->db->where($db->id_field,$field[$db->id_field]);
 				if($group_id != '') $this->EE->db->where('group_id',$group_id);
