@@ -50,7 +50,7 @@ class Draggable_ext
 		{
 
 			// Add JSON Encode/Decode for PHP < 5.2
-			include_once 'includes/jsonwrapper/jsonwrapper.php';
+			include_once 'libraries/jsonwrapper/jsonwrapper.php';
 			
 			// Decode JSON Data
 			$fields = json_decode($this->EE->input->post('draggable_ajax'));
@@ -64,9 +64,6 @@ class Draggable_ext
 				
 				$data = array();
 				$data[$db->order_field] = $index;
-				
-				
-				echo "UPDATE $db->table SET $db->order_field = '$index' WHERE $db->id_field = '" . $field[$db->id_field] . "'" . "\n";
 				
 				$this->EE->db->where($db->id_field,$field[$db->id_field]);
 				if($group_id != '') $this->EE->db->where('group_id',$group_id);
