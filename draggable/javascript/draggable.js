@@ -49,7 +49,7 @@
 						        url: location.href,
 						        data: 'draggable_ajax=' + $.toJSON(fields) + '&draggable_db=' + $.toJSON(db),  //with the page number as a parameter
 						        success: function(msg){
-						            //console.log(msg);
+						            console.log(msg);
 						        }
 						    });
 						}
