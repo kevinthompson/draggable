@@ -6,7 +6,7 @@
  * This extension works in conjunction with its accessory to add draggable sorting to additional areas of the control panel.
  *
  * @package   Draggable
- * @author    Kevin Thompson <me@kevinthompson.info>
+ * @author    Kevin Thompson <kevin@kevinthompson.info>
  * @link      http://github.com/kevinthompson/draggable
  * @copyright Copyright (c) 2010 Kevin Thompson
  * @license   http://creativecommons.org/licenses/by-sa/3.0/   Attribution-Share Alike 3.0 Unported
@@ -39,8 +39,7 @@ class Draggable_ext
 		$settings['draggable_custom_fields'] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
 		$settings['draggable_statuses'] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
 		$settings['draggable_hide_order'] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
-		
-		$settings[$this->EE->lang->line('draggable_display_tab')] = array('s', array('always' => $this->EE->lang->line('always'), 'pages' => $this->EE->lang->line('draggable_pages'), 'never' => $this->EE->lang->line('never')), 'pages');
+		$settings['draggable_display_tab'] = array('s', array('always' => $this->EE->lang->line('always'), 'pages' => $this->EE->lang->line('draggable_pages'), 'never' => $this->EE->lang->line('never')), 'pages');
 	
 		return $settings;
 	}	
