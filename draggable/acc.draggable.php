@@ -17,7 +17,7 @@ class Draggable_acc {
 	var $name			= 'Draggable';
 	var $id				= 'draggable';
 	var $extension		= 'Draggable_ext';
-	var $version		= '1.1';
+	var $version		= '1.2';
 	var $description	= 'Add drag and drop sorting to various areas of the control panel.';
 	
 	var $sections		= array();
