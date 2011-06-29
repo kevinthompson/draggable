@@ -13,6 +13,8 @@ $lang = array(
 	'always'	=> 'Always',
 	'never'		=> 'Never',
 	'draggable_pages' => 'On Draggable Pages',
+
+	'no_category_message' => 'There are currently no categories assigned to this group',
 	
 	''=>''
 );

@@ -70,21 +70,41 @@ class Draggable_acc {
 			
 
 
-			if( $this->current_page['lang'] == $this->pages['category_editor']['lang'])
+			if($this->EE->input->get('M') == 'category_editor')
 			{
 				// NestedSortable replacement for category_editor
 
 				$this->EE->cp->add_js_script(array(
-				  'ui'    => array('core','widget','mouse','draggable','droppable'),
-				  'file'  => array('json2')
+				  'ui'    => array('core','widget','mouse')
 				));
 				$this->EE->javascript->compile();
 
 
 				$this->EE->cp->load_package_js('jquery.ui.nestedSortable');
-				$this->EE->cp->load_package_js('category_editor');
 
-				// a little styling :-/
+				// Prepare library
+				include_once 'libraries/lib_categories.php';
+				$lib_cat = new Lib_categories();
+	
+				$lib_cat->config['session_id'] = $this->EE->session->userdata('session_id');
+				$lib_cat->config['group_id']   = $this->EE->input->get('group_id');
+	
+				// Fetch a clean category list
+				$result  = $lib_cat->fetch_catlist();
+	
+				if($result == 0)
+				{
+					$out = '<strong>'.$this->EE->lang->line('no_category_message').'</strong>';
+				}
+				else
+				{
+					$out  = $lib_cat->nested_list();
+					$out .= '<div class="ns_info">.</div>';
+				}
+				
+				$out = '<div id="nestedsortables">' . $out . '</div>';
+
+
 				$this->EE->cp->add_to_foot('
 				  <style type="text/css">
 					#nestedsortables { padding-top:8px;margin-bottom:40px; background:#f4f6f6; }
@@ -99,6 +119,46 @@ class Draggable_acc {
 					.ns_cats .cat_name { font-weight:bold; font-size:14px; }
 					.ns_cats .cat_id, .ns_info { color:#b0afb0; }
 				  </style>
+				
+				'.$out.'
+				
+				<script type="text/javascript">
+					$(document).ready(function() {
+
+						$(".pageContents").prepend( $("#nestedsortables").detach() );
+						
+						$("ol.ns_cats").nestedSortable({
+							disableNesting: "no-nest",
+							forcePlaceholderSize: true,
+							handle: "div",
+							listType: "ol",
+							helper:	"clone",
+							items: "li",
+							maxLevels: 8,
+							opacity: .6,
+							placeholder: "placeholder",
+							revert: 250,
+							tabSize: 25,
+							tolerance: "pointer",
+							toleranceElement: "> div",
+							stop: function(){
+								$(".ns_info").html("");
+							},
+							update: function(w){
+								serialized = $(this).nestedSortable("serialize");
+								// console.log( serialized );
+								$.ajax({ 
+									url: location.href,
+									type: "POST",
+									data: "drag_cat_ajax=reorder_catlist&"+serialized,
+									success: function( result ){
+										$(".ns_info").html(result);
+									}
+								});
+							}
+						});
+					});
+				</script>
 				');
 			
 			} else {

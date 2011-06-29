@@ -147,7 +147,7 @@ class Lib_categories {
 			
 			// return '<pre>'.$sql  .PHP_EOL . PHP_EOL . mysql_affected_rows().' rows </pre>';
 			
-			return 'Updated!';
+			return 'updated';
 
 		}
 
