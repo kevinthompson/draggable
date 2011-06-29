@@ -68,21 +68,59 @@ class Draggable_acc {
 			
 			$this->current_page = $this->valid_pages[$this->EE->input->get('M')];
 			
-			$this->EE->cp->load_package_js('jquery.tablednd_0_5');
-			$this->EE->cp->load_package_js('jquery.json-2.2.min');
-			$this->EE->cp->load_package_js('draggable');
-			$this->EE->cp->add_to_foot('
-			<script type="text/javascript">
-			//<![CDATA[
-			EE.draggable = {
-				table: "' . $this->current_page['table'] . '",
-				field: "' . $this->current_page['field'] . '",
-				id:    "' . $this->current_page['id'] . '",
-				updateOrder:    ' . (isset($this->current_page['updateOrder']) ? $this->current_page['updateOrder'] : 'false') . '
+
+
+			if( $this->current_page['lang'] == $this->pages['category_editor']['lang'])
+			{
+				// NestedSortable replacement for category_editor
+
+				$this->EE->cp->add_js_script(array(
+				  'ui'    => array('core','widget','mouse','draggable','droppable'),
+				  'file'  => array('json2')
+				));
+				$this->EE->javascript->compile();
+
+
+				$this->EE->cp->load_package_js('jquery.ui.nestedSortable');
+				$this->EE->cp->load_package_js('category_editor');
+
+				// a little styling :-/
+				$this->EE->cp->add_to_foot('
+				  <style type="text/css">
+					#nestedsortables { padding-top:8px;margin-bottom:40px; background:#f4f6f6; }
+					#nestedsortables .placeholder { background:#ddd; }
+					.ns_info{ padding:12px; }
+					ol.ns_cats { margin:10px; list-style-type:none; }
+					ol.ns_cats ol { padding-left:32px; list-style-type:none; }
+					.ns_cats li div { margin:4px 0; overflow:hidden; background-color:#ebf0f2; border:1px solid #d0d6df; cursor:move; line-height:16px; }
+					.ns_cats div:hover { background-color:#e3fde1; }
+					.ns_cats span { display:block; float:left; padding:7px 10px; }
+					.ns_cats .cat_edit,.ns_cats .cat_delete { float:right; padding-left:36px; padding-right:84px; border-left:1px solid #d0d6df; }
+					.ns_cats .cat_name { font-weight:bold; font-size:14px; }
+					.ns_cats .cat_id, .ns_info { color:#b0afb0; }
+				  </style>
+				');
+			
+			} else {
+			
+				// Other Draggables
+
+				$this->EE->cp->load_package_js('jquery.tablednd_0_5');
+				$this->EE->cp->load_package_js('jquery.json-2.2.min');
+				$this->EE->cp->load_package_js('draggable');
+				$this->EE->cp->add_to_foot('
+				<script type="text/javascript">
+				//<![CDATA[
+				EE.draggable = {
+					table: "' . $this->current_page['table'] . '",
+					field: "' . $this->current_page['field'] . '",
+					id:    "' . $this->current_page['id'] . '",
+					updateOrder:    ' . (isset($this->current_page['updateOrder']) ? $this->current_page['updateOrder'] : 'false') . '
+				}
+				//]]>
+				</script>
+				');
 			}
-			//]]>
-			</script>
-			');
 		}
 	}
 
@@ -110,6 +148,12 @@ class Draggable_acc {
 		if($tabs == 'always' || ($tabs == 'pages' && $this->EE->input->get('M') != '' && array_key_exists($this->EE->input->get('M'),$this->valid_pages)))
 		{
 			$this->sections[$this->EE->lang->line('draggable_sorting_enabled') . ($hideOrder != '' ? '<script type="text/javascript">' . $hideOrder . '</script>' : '')] = $this->EE->lang->line('draggable_instructions');
+
+			if($this->EE->input->get('M') == 'category_editor')
+			{
+				$this->sections['<style type="text/css">table.mainTable { display:none; }</style>'] = '';
+			}
+
 		}else{
 			$this->sections['
 			<script type="text/javascript">
