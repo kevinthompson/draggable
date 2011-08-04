@@ -92,10 +92,7 @@ class Lib_categories {
 		// More posted then in DB? (Equivalent vs identical: php.net/operators.comparison )
 		if($cats_compare != $list) return 'Number of categories changed!';
 
-
-		$prev_parent = 0;
-		$cat_order   = 0;
-		$root_order  = 0;
+		$cat_order   = array();
 		$where       = array();
 		$sql1        = "";
 		$sql2        = "";
@@ -107,26 +104,16 @@ class Lib_categories {
 
 			if($parent_id != 0 && !isset($list[$parent_id])) return 'Orphaned category found!';
 
-			$cat_order++;
+			$cat_order[$parent_id]++;
 			
-			// reset cat_order for new parents
-			if($parent_id != $prev_parent) $cat_order = 1;
-			
-			// Keeping track of root_order
-			if($parent_id == 0){
-				$root_order++; 
-				$cat_order = $root_order; 
-			}
-
 			// Only update rows that have actually moved
-			if($this->catrefs[$cat_id]['parent_id'] != $parent_id || $this->catrefs[$cat_id]['cat_order'] != $cat_order)
+			if($this->catrefs[$cat_id]['parent_id'] != $parent_id || $this->catrefs[$cat_id]['cat_order'] != $cat_order[$parent_id])
 			{
 				$sql1      .= " WHEN cat_id = $cat_id THEN $parent_id \n";
-				$sql2      .= " WHEN cat_id = $cat_id THEN $cat_order \n";
+				$sql2      .= " WHEN cat_id = $cat_id THEN ".$cat_order[$parent_id]." \n";
 				$where[]    = $cat_id;
 			}
 			
-			$prev_parent = $parent_id;
 		}
 
 		// DB->Query only when needed
