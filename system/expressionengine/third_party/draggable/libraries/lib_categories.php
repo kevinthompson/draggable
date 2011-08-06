@@ -104,7 +104,7 @@ class Lib_categories {
 
 			if($parent_id != 0 && !isset($list[$parent_id])) return 'Orphaned category found!';
 
-			$cat_order[$parent_id]++;
+			@$cat_order[$parent_id]++;
 			
 			// Only update rows that have actually moved
 			if($this->catrefs[$cat_id]['parent_id'] != $parent_id || $this->catrefs[$cat_id]['cat_order'] != $cat_order[$parent_id])
