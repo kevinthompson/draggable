@@ -119,12 +119,13 @@ class Draggable_acc
 					.ns_info{ padding:12px; }
 					ol.ns_cats { margin:10px; list-style-type:none; }
 					ol.ns_cats ol { padding-left:32px; list-style-type:none; }
-					.ns_cats li div { margin:4px 0; overflow:hidden; background-color:#ebf0f2; border:1px solid #d0d6df; cursor:move; line-height:16px; }
+					.ns_cats li div { cursor: move; margin: 0 0 2px; overflow: hidden; background-color: #EBF0F2; line-height: 16px; border-radius: 4px; border: 1px solid #CCC; box-shadow: 1px 1px 1px #eEF;}
 					.ns_cats div:hover { background-color:#e3fde1; }
-					.ns_cats span { display:block; float:left; padding:7px 10px; }
-					.ns_cats .cat_edit,.ns_cats .cat_delete { float:right; padding-left:36px; padding-right:84px; border-left:1px solid #d0d6df; }
-					.ns_cats .cat_name { font-weight:bold; font-size:14px; }
-					.ns_cats .cat_id, .ns_info { color:#b0afb0; }
+					.ns_cats span { display:block; padding:7px 10px; }
+					.ns_cats .cat_edit,.ns_cats .cat_delete { float:right; padding-left:14px; padding-right:14px; border-left:1px solid #d0d6df; }
+					.ns_cats .cat_name { float:left; width:77%; font-weight:bold; font-size:14px; }
+					.ns_cats .cat_id, .ns_info { font-size:11px; font-style:normal; font-weight:normal; color:#b0afb0; }
+					
 				  </style>
 				
 				'.$out.'

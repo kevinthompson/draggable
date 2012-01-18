@@ -58,7 +58,7 @@ class Lib_categories {
 			$deletelink = '<a href="index.php?S='.$this->config['session_id'].'&D=cp&C=admin_content&M=category_delete_conf&cat_id='.$v['cat_id'].'&group_id='.$this->config['group_id'].'">Delete</a>';
 
 			$html .= PHP_EOL.'<li id="list_'.$v['cat_id'].'"><div>';
-			$html .= '<span class="cat_name">'.$v['cat_name'].'</span> <span class="cat_id">'.$v['cat_url_title'].' &nbsp;&nbsp; ID: '.$v['cat_id'].'</span>';
+			$html .= '<span class="cat_name">'.$v['cat_name'].' <em class="cat_id">&nbsp; '.'ID:'.$v['cat_id'].' '.$v['cat_url_title'].'</em></span>';
 			$html .= '<span class="cat_delete">'.$deletelink.'</span>';
 			$html .= '<span class="cat_edit">'.$editlink.'</span>';
 			$html .= '</div>';
