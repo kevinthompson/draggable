@@ -6,51 +6,61 @@
  * This extension works in conjunction with its extension to add draggable sorting to additional areas of the control panel.
  *
  * @package   Draggable
- * @author    Kevin Thompson <me@kevinthompson.info>
+ * @author    Kevin Thompson <kevin@kevinthompson.info>
  * @link      http://github.com/kevinthompson/draggable
  * @copyright Copyright (c) 2010 Kevin Thompson
  * @license   http://creativecommons.org/licenses/by-sa/3.0/   Attribution-Share Alike 3.0 Unported
  */
 
-class Draggable_acc {
-
-	var $name			= 'Draggable';
-	var $id				= 'draggable';
+class Draggable_acc 
+{
+	var $name			    = 'Draggable';
+	var $id				    = 'draggable';
 	var $extension		= 'Draggable_ext';
-	var $version		= '1.2';
-	var $description	= 'Add drag and drop sorting to various areas of the control panel.';
+	var $description	= 'Add drag and drop sorting custom channel fields, member fields, statuses, and categories.';
+	var $version		  = '1.3';
+	var $sections		  = array();
 	
-	var $sections		= array();
-	var $settings		= array();
-	var $valid_pages	= array();
-	var $current_page	= '';
+	/**
+	 * Current Page
+	 *
+	 * @var string
+	 */
+	var $_current     = '';
 	
-	var $pages			= array(				
+	/**
+	 * Define Draggable Pages
+	 *
+	 * @var array
+	 */
+	var $_pages			  = array(				
 		'category_update' => array(
-			'lang'	=> 'draggable_categories',
 			'table' => 'exp_categories',
 			'field'	=> 'cat_order',
-			'id'	=> 'cat_id'
+			'id'	  => 'cat_id'
 		),
 		'category_editor' => array(
-			'lang'	=> 'draggable_categories',
 			'table' => 'exp_categories',
 			'field'	=> 'cat_order',
-			'id'	=> 'cat_id'
+			'id'	  => 'cat_id',
+			'order'	=> 2
 		),
 		'field_management' => array(
-			'lang'	=> 'draggable_custom_fields',
 			'table' => 'exp_channel_fields',
 			'field'	=> 'field_order',
-			'id'	=> 'field_id',
-			'updateOrder'	=> true,
-			'hideOrder'		=> true
+			'id'	  => 'field_id',
+			'order'	=> 3
 		),
 		'status_management' => array(
-			'lang'	=> 'draggable_statuses',
 			'table' => 'exp_statuses',
 			'field'	=> 'status_order',
-			'id'	=> 'status_id'
+			'id'	  => 'status_id'
+		),
+		'custom_profile_fields' => array(
+			'table' => 'exp_member_fields',
+			'field'	=> 'm_field_order',
+			'id'	  => 'm_field_id',
+			'order'	=> 4
 		)
 	);
 
@@ -60,13 +70,10 @@ class Draggable_acc {
 	function Draggable_acc()
 	{
 		$this->EE =& get_instance();
-		$this->EE->lang->loadfile('draggable');
-		$this->settings = $this->get_settings();
-		$this->valid_pages = $this->set_valid_pages();
 		
-		if($this->EE->input->get('M') != '' && array_key_exists($this->EE->input->get('M'),$this->valid_pages)){
+		if($this->EE->input->get('M') != '' && array_key_exists($this->EE->input->get('M'),$this->_pages)){
 			
-			$this->current_page = $this->valid_pages[$this->EE->input->get('M')];
+			$this->_current = $this->_pages[$this->EE->input->get('M')];
 			
 
 
@@ -196,93 +203,23 @@ class Draggable_acc {
 	 */
 	function set_sections()
 	{	
-		$this->settings = $this->get_settings();
-		$hideOrder = '';
-		
-		if(isset($this->current_page['hideOrder']) && $this->current_page['hideOrder'] === true && (!isset($this->settings['draggable_hide_order']) || (isset($this->settings['draggable_hide_order']) && $this->settings['draggable_hide_order'] == 'yes')))
+	  // Determine If Order Control Needs To Be Hidden
+		if( isset($this->_current['order']) )
 		{
-			$hideOrder = '$(".mainTable").find("tr th:nth-child(2),tr td:nth-child(2)").hide();';
+		  $orderColumn  = $this->EE->input->get('M') == 'field_management' && $this->EE->config->item('app_version') < 220 ? 2 : $this->_current['order'];
+			$hideOrder    = '$(".mainTable").find("tr th:nth-child(' . $orderColumn . '),tr td:nth-child(' . $orderColumn . ')").hide();';
 		}
 		
-		$tabs = isset($this->settings['draggable_display_tab']) ? $this->settings['draggable_display_tab'] : 'pages';
-		if($tabs == 'always' || ($tabs == 'pages' && $this->EE->input->get('M') != '' && array_key_exists($this->EE->input->get('M'),$this->valid_pages)))
-		{
-			$this->sections[$this->EE->lang->line('draggable_sorting_enabled') . ($hideOrder != '' ? '<script type="text/javascript">' . $hideOrder . '</script>' : '')] = $this->EE->lang->line('draggable_instructions');
-
-			if($this->EE->input->get('M') == 'category_editor')
-			{
-				$this->sections['<style type="text/css">table.mainTable { display:none; }</style>'] = '';
-			}
-
-		}else{
-			$this->sections['
-			<script type="text/javascript">
-				$("#accessoryTabs .' . $this->id  . '").parent("li").hide();' . 
-				$hideOrder . '
-			</script>
-			'] = "This is not the accessory you're looking for.";
-		}
+		// Hide Accessory Tab And Order Control
+		// This could be done in the JS file but placing it here stops the tab from becoming visible at all.
+		$this->sections['
+		<script type="text/javascript">
+			$("#accessoryTabs .' . $this->id  . '").parent("li").hide();' . 
+			(isset($hideOrder) ? $hideOrder : '') . '
+		</script>
+		'] = "View the source, Luke.";
 	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set Valid Pages
-	 *
-	 * Set valid pages based on extension settings
-	 *
-	 * @access	public
-	 * @return	void
-	 */
-	function set_valid_pages()
-	{	
-		$valid_pages = array();
-		
-		foreach($this->pages as $title => $page)
-		{
-			if(!isset($this->settings[$page['lang']]) || $this->settings[$page['lang']] == 'yes') $valid_pages[$title] = $page;
-		}
-		
-		return $valid_pages;
-	}
-	
-	// --------------------------------------------------------------------
-
-	/**
-	 * Get Settings
-	 *
-	 * Get settings form extension
-	 *
-	 * @access	public
-	 * @return	array
-	 */
-	function get_settings($all_sites = FALSE)
-	{
-		$get_settings = $this->EE->db->query("SELECT settings 
-			FROM exp_extensions 
-			WHERE class = '".$this->extension."' 
-			LIMIT 1");
-		
-		$this->EE->load->helper('string');
-		
-		if ($get_settings->num_rows() > 0 && $get_settings->row('settings') != '')
-        {
-        	$settings = strip_slashes(unserialize($get_settings->row('settings')));
-        	$settings = ($all_sites == FALSE && isset($settings[$this->EE->config->item('site_id')])) ? 
-        		$settings[$this->EE->config->item('site_id')] : 
-        		$settings;
-        }
-        else
-        {
-        	$settings = array();
-        }
-        return $settings;
-	}	
-
-	// --------------------------------------------------------------------
-
 }
-// END CLASS
 
 /* End of file acc.draggable.php */
 /* Location: ./system/expressionengine/third_party/draggable/acc.draggable.php */

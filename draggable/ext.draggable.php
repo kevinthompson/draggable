@@ -14,37 +14,30 @@
 
 class Draggable_ext
 {
-	var $settings        = array();
 	var $name            = 'Draggable';
-	var $version         = '1.2';
-	var $description     = 'Add drag and drop sorting to various areas of the control panel.';
-	var $settings_exist  = 'y';
-	var $docs_url		 = '';
+	var $description     = 'Add drag and drop sorting custom channel fields, member fields, statuses, and categories.';
+	var $version         = '1.3';
+	var $settings_exist  = 'n';
+	var $docs_url		     = 'https://github.com/kevinthompson/ee.draggable.php';
 
-	function Draggable_ext($settings='')
+  /**
+   * Constructor
+   */
+	function Draggable_ext()
 	{
-	    $this->settings = $settings;
 	    $this->EE =& get_instance();
 	}
 	
-	// --------------------------------
-	//  Settings
-	// --------------------------------  
-
-	function settings()
-	{	
-		$settings = array();
-		
-		$settings['draggable_categories'] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
-		$settings['draggable_custom_fields'] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
-		$settings['draggable_statuses'] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
-		$settings['draggable_hide_order'] = array('r', array('yes' => $this->EE->lang->line('yes'), 'no' => $this->EE->lang->line('no')), 'yes');
-		$settings['draggable_display_tab'] = array('s', array('always' => $this->EE->lang->line('always'), 'pages' => $this->EE->lang->line('draggable_pages'), 'never' => $this->EE->lang->line('never')), 'pages');
+	// --------------------------------------------------------------------
 	
-		return $settings;
-	}	
-	
-	function update_order($session)
+	/**
+	 * Update Item Order
+	 *
+	 * @param string $session 
+	 * @return void
+	 * @author Kevin Thompson
+	 */
+	function update_order( $session )
 	{
 	
 		if($this->EE->input->post('drag_cat_ajax') != '' && $this->EE->input->get('group_id') != '')
@@ -91,7 +84,6 @@ class Draggable_ext
 
 		if($this->EE->input->post('draggable_ajax') != '')
 		{
-
 			// Add JSON Encode/Decode for PHP < 5.2
 			include_once 'libraries/jsonwrapper/jsonwrapper.php';
 			
@@ -99,6 +91,7 @@ class Draggable_ext
 			$fields = json_decode($this->EE->input->post('draggable_ajax'));
 			$db = json_decode($this->EE->input->post('draggable_db'));
 			
+			// Update Each Row's Order
 			foreach($fields as $index => $field)
 			{
 				$field = (array) $field;
@@ -118,50 +111,68 @@ class Draggable_ext
 		}
 	}
 	
-		
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Activate Extension
+	 *
+	 * @return void
+	 * @author Kevin Thompson
+	 */	
 	function activate_extension()
 	{
-		$this->settings = array(
-			'draggable_categories'		=> 'yes',
-			'draggable_custom_fields'	=> 'yes',
-			'draggable_statuses'		=> 'yes',
-			'draggable_hide_order'		=> 'yes',
-			'draggable_display_tab'		=> 'pages'
-		);
-
-		$this->EE->db->query($this->EE->db->insert_string('exp_extensions',
-	    	array(
-				'extension_id' => '',
-		        'class'        => ucfirst(get_class($this)),
-		        'method'       => 'update_order',
-		        'hook'         => 'sessions_end',
-		        'settings'     => serialize($this->settings),
-		        'priority'     => 10,
-		        'version'      => $this->version,
-		        'enabled'      => "y"
-				)
-			)
-		);
+	  // Create Extension Record
+    $this->EE->db->query(
+      $this->EE->db->insert_string('exp_extensions',
+        array(
+        'extension_id' => '',
+        'class'        => ucfirst(get_class($this)),
+        'method'       => 'update_order',
+        'hook'         => 'sessions_end',
+        'priority'     => 10,
+        'version'      => $this->version,
+        'enabled'      => "y"
+        )
+      )
+    );
 	}
-
-
-	function update_extension($current='')
-	{
-	    if ($current == '' OR $current == $this->version)
-	    {
-	        return FALSE;
-	    }
-	    
-		$this->EE->db->query("UPDATE exp_extensions 
-	     	SET version = '". $this->EE->db->escape_str($this->version)."',
-	 			settings = REPLACE(settings,'Display Accessory Tab','draggable_display_tab')
-	     	WHERE class = '".ucfirst(get_class($this))."'");
-	}
-
 	
+	// --------------------------------------------------------------------
+
+  /**
+   * Update Extension
+   *
+   * @param string $current - current version number
+   * @return void
+   * @author Kevin Thompson
+   */
+	function update_extension( $current = '' )
+	{
+    if ($current == '' || $current == $this->version)
+    {
+      return FALSE;
+    }
+	    
+		$this->EE->db->query("
+      UPDATE exp_extensions 
+      SET version = '". $this->EE->db->escape_str($this->version)."', 
+      settings = '' 
+      WHERE class = '" . ucfirst(get_class($this)) . "'"
+    );
+	}
+	
+	// --------------------------------------------------------------------
+
+	/**
+	 * Disable Extension
+	 *
+	 * @return void
+	 * @author Kevin Thompson
+	 */
 	function disable_extension()
 	{	    
-		$this->EE->db->query("DELETE FROM exp_extensions WHERE class = '".ucfirst(get_class($this))."'");
+	  // Delete Extension Record
+		$this->EE->db->query("DELETE FROM exp_extensions WHERE class = '" . ucfirst(get_class($this)) . "'");
 	}
 
 }
