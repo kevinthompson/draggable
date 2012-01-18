@@ -132,7 +132,8 @@ class Draggable_acc
 				<script type="text/javascript">
 					$(document).ready(function() {
 
-						$(".pageContents").prepend( $("#nestedsortables").detach() );
+						$(".mainTable").detach();
+						$(".pageContents").prepend($("#nestedsortables"));
 						
 						$("ol.ns_cats").nestedSortable({
 							disableNesting: "no-nest",
@@ -179,10 +180,9 @@ class Draggable_acc
 				<script type="text/javascript">
 				//<![CDATA[
 				EE.draggable = {
-					table: "' . $this->current_page['table'] . '",
-					field: "' . $this->current_page['field'] . '",
-					id:    "' . $this->current_page['id'] . '",
-					updateOrder:    ' . (isset($this->current_page['updateOrder']) ? $this->current_page['updateOrder'] : 'false') . '
+					table: "' . $this->_current['table'] . '",
+					field: "' . $this->_current['field'] . '",
+					id:    "' . $this->_current['id'] . '"
 				}
 				//]]>
 				</script>
