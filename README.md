@@ -1,9 +1,20 @@
 
-Draggable
+# Draggable2
 ==============================
 
 Draggable adds drag and drop sorting to custom channel fields, member fields, statuses, and categories in the [ExpressionEngine](http://www.expressionengine.com) control panel.
 
+<<<<<<< HEAD
+Drag categories to the right to nest them below others
+
+
+## Notices
+- Javascript required (please report IE issues on github)
+- Currently only works with default database prefix of exp_
+
+*__Note:__ Draggable has been merged into another addon of mine, 
+Facelift, which adds additional functionality to the admin interface beyond drag and drop sorting.*
+=======
 ## Installation
 
 To install Draggable:
@@ -24,3 +35,4 @@ Once installed, you'll be able to sort entries on the custom channel fields, mem
 
 ### 1.2
 - Various Bug Fixes
+>>>>>>> e028a103335d3122dff8cd1aa5efd071db726c64

@@ -39,6 +39,49 @@ class Draggable_ext
 	 */
 	function update_order( $session )
 	{
+	
+		if($this->EE->input->post('drag_cat_ajax') != '' && $this->EE->input->get('group_id') != '')
+		{
+
+			// NestedSortable replacement for category_editor
+
+			$drag_cat_ajax = $this->EE->input->post('drag_cat_ajax');
+
+			// Prepare library
+			include_once 'libraries/lib_categories.php';
+			$lib_cat = new Lib_categories();
+
+			$lib_cat->config['session_id'] = $session->sdata['session_id'];
+			$lib_cat->config['group_id']   = $this->EE->input->get('group_id');
+
+			// Always fetch a clean category list
+			$result  = $lib_cat->fetch_catlist();
+
+			if($result == 0)
+			{
+				echo 'There are currently no categories assigned to this group';
+				exit;
+			}
+
+			// called on pageload, result echo into nestedsortables div
+			if(	$drag_cat_ajax == 'fetch_catlist')
+			{
+				echo $lib_cat->nested_list();
+			}
+
+			// called on update, results echo into ns_info div
+			if(	$drag_cat_ajax == 'reorder_catlist')
+			{
+				$list = $this->EE->input->post('list');
+
+				echo $lib_cat->reorder($list);
+				
+			}
+
+			// Kill EE Execution
+			exit();
+		}
+
 		if($this->EE->input->post('draggable_ajax') != '')
 		{
 			// Add JSON Encode/Decode for PHP < 5.2

@@ -75,20 +75,120 @@ class Draggable_acc
 			
 			$this->_current = $this->_pages[$this->EE->input->get('M')];
 			
-			$this->EE->cp->load_package_js('jquery.tablednd_0_5');
-			$this->EE->cp->load_package_js('jquery.json-2.2.min');
-			$this->EE->cp->load_package_js('draggable');
-			$this->EE->cp->add_to_foot('
-			<script type="text/javascript">
-			//<![CDATA[
-			EE.draggable = {
-				table: "' . $this->_current['table'] . '",
-				field: "' . $this->_current['field'] . '",
-				id:    "' . $this->_current['id'] . '"
+
+
+			if($this->EE->input->get('M') == 'category_editor')
+			{
+				// NestedSortable replacement for category_editor
+
+				$this->EE->cp->add_js_script(array(
+				  'ui'    => array('core','widget','mouse')
+				));
+				$this->EE->javascript->compile();
+
+
+				$this->EE->cp->load_package_js('jquery.ui.nestedSortable');
+
+				// Prepare library
+				include_once 'libraries/lib_categories.php';
+				$lib_cat = new Lib_categories();
+	
+				$lib_cat->config['session_id'] = $this->EE->session->userdata('session_id');
+				$lib_cat->config['group_id']   = $this->EE->input->get('group_id');
+	
+				// Fetch a clean category list
+				$result  = $lib_cat->fetch_catlist();
+	
+				if($result == 0)
+				{
+					$out = '<strong>'.$this->EE->lang->line('no_category_message').'</strong>';
+				}
+				else
+				{
+					$out  = $lib_cat->nested_list();
+					$out .= '<div class="ns_info">.</div>';
+				}
+				
+				$out = '<div id="nestedsortables">' . $out . '</div>';
+
+
+				$this->EE->cp->add_to_foot('
+				  <style type="text/css">
+					#nestedsortables { padding-top:8px;margin-bottom:40px; background:#f4f6f6; }
+					#nestedsortables .placeholder { background:#ddd; }
+					.ns_info{ padding:12px; }
+					ol.ns_cats { margin:10px; list-style-type:none; }
+					ol.ns_cats ol { padding-left:32px; list-style-type:none; }
+					.ns_cats li div { cursor: move; margin: 0 0 2px; overflow: hidden; background-color: #EBF0F2; line-height: 16px; border-radius: 4px; border: 1px solid #CCC; box-shadow: 1px 1px 1px #eEF;}
+					.ns_cats div:hover { background-color:#e3fde1; }
+					.ns_cats span { display:block; padding:7px 10px; }
+					.ns_cats .cat_edit,.ns_cats .cat_delete { float:right; padding-left:14px; padding-right:14px; border-left:1px solid #d0d6df; }
+					.ns_cats .cat_name { float:left; width:77%; font-weight:bold; font-size:14px; }
+					.ns_cats .cat_id, .ns_info { font-size:11px; font-style:normal; font-weight:normal; color:#b0afb0; }
+					
+				  </style>
+				
+				'.$out.'
+				
+				<script type="text/javascript">
+					$(document).ready(function() {
+
+						$(".mainTable").detach();
+						$(".pageContents").prepend($("#nestedsortables"));
+						
+						$("ol.ns_cats").nestedSortable({
+							disableNesting: "no-nest",
+							forcePlaceholderSize: true,
+							handle: "div",
+							listType: "ol",
+							helper:	"clone",
+							items: "li",
+							maxLevels: 8,
+							opacity: .6,
+							placeholder: "placeholder",
+							revert: 250,
+							tabSize: 25,
+							tolerance: "pointer",
+							toleranceElement: "> div",
+							stop: function(){
+								$(".ns_info").html("");
+							},
+							update: function(w){
+								serialized = $(this).nestedSortable("serialize");
+								// console.log( serialized );
+								$.ajax({ 
+									url: location.href,
+									type: "POST",
+									data: "drag_cat_ajax=reorder_catlist&"+serialized,
+									success: function( result ){
+										$(".ns_info").html(result);
+									}
+								});
+							}
+						});
+					});
+				</script>
+				');
+			
+			} else {
+			
+				// Other Draggables
+
+				$this->EE->cp->load_package_js('jquery.tablednd_0_5');
+				$this->EE->cp->load_package_js('jquery.json-2.2.min');
+				$this->EE->cp->load_package_js('draggable');
+				$this->EE->cp->add_to_foot('
+				<script type="text/javascript">
+				//<![CDATA[
+				EE.draggable = {
+					table: "' . $this->_current['table'] . '",
+					field: "' . $this->_current['field'] . '",
+					id:    "' . $this->_current['id'] . '"
+				}
+				//]]>
+				</script>
+				');
 			}
-			//]]>
-			</script>
-			');
 		}
 	}
 
