@@ -1,0 +1,3 @@
+.tDnD_whileDrag { outline: 1px solid #bbc2c9; }
+.tDnD_whileDrag td { border-bottom:1px solid transparent !important; position:relative; }
+.tDnD_whileDrag td:first-child:before { width: 3px; position:absolute; left:-3px; top:-1px; bottom:-2px; background-color:#45555f; position:absolute; content: ""; }

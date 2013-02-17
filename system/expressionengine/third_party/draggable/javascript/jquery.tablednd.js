@@ -24,6 +24,8 @@
  *     Pass a function that will be called when the row is dropped. The function takes 2 parameters: the table
  *     and the row that was dropped. You can work out the new order of the rows by using
  *     table.rows.
+ * onMove
+ *     Pass a function that will be called when the row is moved.
  * onDragStart
  *     Pass a function that will be called when the user starts dragging. The function takes 2 parameters: the
  *     table and the row which the user has started to drag.
@@ -98,6 +100,7 @@ jQuery.tableDnD = {
 				// Add in the default class for whileDragging
 				onDragClass: "tDnD_whileDrag",
                 onDrop: null,
+                onMove: null,
                 onDragStart: null,
                 scrollAmount: 5,
 				serializeRegexp: /[^\-]*$/, // The regular expression to use to trim row IDs
@@ -134,6 +137,15 @@ jQuery.tableDnD = {
                         // Call the onDrop method if there is one
                         config.onDragStart(table, this);
                     }
+                    
+                    // update the style to show we're dragging
+                    var dragObj = jQuery(jQuery.tableDnD.dragObject);
+                    if (config.onDragClass) {
+                        dragObj.addClass(config.onDragClass);
+                    } else {
+                        dragObj.css(config.onDragStyle);
+                    }
+
                     return false;
                 });
 			})
@@ -153,6 +165,15 @@ jQuery.tableDnD = {
 	                            // Call the onDrop method if there is one
 	                            config.onDragStart(table, this);
 	                        }
+                    
+                            // update the style to show we're dragging
+                            var dragObj = jQuery(jQuery.tableDnD.dragObject);
+                            if (config.onDragClass) {
+                                dragObj.addClass(config.onDragClass);
+                            } else {
+                                dragObj.css(config.onDragStyle);
+                            }
+                            
 	                        return false;
 	                    }
 	                }).css("cursor", "move"); // Store the tableDnD object
@@ -252,18 +273,11 @@ jQuery.tableDnD = {
             }
         }
 
-
         if (y != jQuery.tableDnD.oldY) {
             // work out if we're going up or down...
             var movingDown = y > jQuery.tableDnD.oldY;
             // update the old value
             jQuery.tableDnD.oldY = y;
-            // update the style to show we're dragging
-			if (config.onDragClass) {
-				dragObj.addClass(config.onDragClass);
-			} else {
-	            dragObj.css(config.onDragStyle);
-			}
             // If we're over a row then move the dragged row to there so that the user sees the
             // effect dynamically
             var currentRow = jQuery.tableDnD.findDropTargetRow(dragObj, y);
@@ -273,6 +287,11 @@ jQuery.tableDnD = {
                     jQuery.tableDnD.dragObject.parentNode.insertBefore(jQuery.tableDnD.dragObject, currentRow.nextSibling);
                 } else if (! movingDown && jQuery.tableDnD.dragObject != currentRow) {
                     jQuery.tableDnD.dragObject.parentNode.insertBefore(jQuery.tableDnD.dragObject, currentRow);
+                }
+
+                if (config.onMove) {
+                    // Call the onDrop method if there is one
+                    config.onMove();
                 }
             }
         }
