@@ -18,7 +18,7 @@ class Draggable_acc
   var $id           = 'draggable';
   var $extension    = 'Draggable_ext';
   var $description  = 'Add drag and drop sorting custom channel fields, member fields, statuses, and categories.';
-  var $version      = '1.4.0';
+  var $version      = '1.4.1';
   var $sections     = array();
 
   /**

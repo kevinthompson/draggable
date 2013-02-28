@@ -16,6 +16,9 @@ Once installed, you'll be able to sort entries on the custom channel fields, mem
 
 ## ChangeLog
 
+### 1.4.1
+- Add support for DevDemon Udpater
+
 ### 1.4
 - Revise order column hiding logic to accurately hide the correct column regardless of ExpressionEngine version or language
 - Add visible drag handles to tables that include Draggable
