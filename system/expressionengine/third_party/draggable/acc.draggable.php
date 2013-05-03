@@ -122,7 +122,7 @@ class Draggable_acc
       // Hide Order Column
       draggableSetup = function(){
         table = $('.mainTable');
-        if(table.find('tbody tr').length > 1){
+        if(table.find('tbody tr').length > 0){
           orderIndex = table.find('th:contains(\"{$this->EE->lang->line('order')}\")').index();
           table.find('tr > *:nth-child(' + (++orderIndex) + ')').hide();
 
