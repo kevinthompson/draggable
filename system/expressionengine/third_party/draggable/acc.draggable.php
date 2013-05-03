@@ -140,7 +140,7 @@ class Draggable_acc
           var draggableTimeout;
           var draggableTableCheck = function(){
             clearTimeout(draggableTimeout);
-            if($(".sub_hold_field_category .mainTable").length > 0){
+            if($(".mainTable", "#sub_hold_field_category, .sub_hold_field_category").length > 0){
               draggableSetup();
               Draggable.init();
             }else{
