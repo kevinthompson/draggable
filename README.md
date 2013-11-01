@@ -1,4 +1,3 @@
-
 Draggable
 ==============================
 
@@ -15,6 +14,10 @@ To install Draggable:
 Once installed, you'll be able to sort entries on the custom channel fields, member fields, statuses, and categories pages by dragging and dropping the table rows. Row order is saved automatically when you drop the row in its new position.
 
 ## ChangeLog
+
+### 1.4.2
+- Fix a bug that was stopping the publish page from displaying Draggable
+- Enable Draggable even if only one column is visible
 
 ### 1.4.1
 - Add support for DevDemon Udpater
