@@ -18,7 +18,7 @@ class Draggable_ext
   var $description     = 'Add drag and drop sorting custom channel fields, member fields, statuses, and categories.';
   var $docs_url        = 'https://github.com/kevinthompson/draggable';
   var $settings_exist  = 'n';
-  var $version         = '1.4.1';
+  var $version         = '1.4.2';
 
   /**
    * Constructor
