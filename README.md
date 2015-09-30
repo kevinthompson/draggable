@@ -30,7 +30,7 @@ Once installed, you'll be able to sort entries on the custom channel fields, mem
 - Add support for sorting custom category fields
 - Improved row styles while in dragging state
 - Updated zip file format to be compatibile with DevDemon Updater
-- Add the abilty to drag and drop categories in the edit categories feature of the publish section's categories tab
+- Add the ability to drag and drop categories in the edit categories feature of the publish section's categories tab
 
 ### 1.3
 - Added sorting to custom member fields
