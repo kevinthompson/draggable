@@ -58,7 +58,7 @@ var Draggable = (function ($){
 
                   // Define Field Data
                   var href = $(row).find('td a:first').attr('href');
-                  var params = href.split('&');
+                  var params = href.split(/\?|&/);
 
                   fields[i] = {};
 
